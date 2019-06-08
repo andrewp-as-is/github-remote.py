@@ -16,7 +16,7 @@ def _help(ctx, param, value):
 @click.command()
 @click.option('--help', is_flag=True, is_eager=False, expose_value=False, callback=_help)
 def _cli():
-    url = github_remote.url()
+    url = github_remote.geturl()
     if url:
         print(url)
 

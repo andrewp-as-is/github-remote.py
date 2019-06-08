@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import os
 import public
-import runcmd
+import subprocess
+
 
 """
 https://github.com/owner/repo
@@ -15,6 +16,7 @@ git@owner-github.com:owner/repo.git
 git@github-owner:owner/repo.git
 """
 
+
 def _remotes():
     result = []
     for l in os.popen("git remote -v").read().splitlines():
@@ -23,10 +25,12 @@ def _remotes():
             result.append([name, url])
     return result
 
+
 @public.add
 def add(name, url):
     """`git remote add name url`"""
-    runcmd.run(["git", "remote", "add", name, url])._raise()
+    args = ["git", "remote", "add", name, url]
+    subprocess.check_call(args)
 
 
 @public.add
@@ -38,15 +42,16 @@ def get():
         if "https://" in url and "github" in url.split("/")[2]:
             return name, url
 
+
 @public.add
-def name():
+def getname():
     """return git remote name"""
     name, url = get() or (None, None)
     return name
 
 
 @public.add
-def url():
+def geturl():
     """return git remote url"""
     name, url = get() or (None, None)
     return url
@@ -55,7 +60,7 @@ def url():
 @public.add
 def rm():
     """`git remote rm name`"""
-    _name = name()
-    if _name:
-        runcmd.run(["git", "remote", "rm", _name])
-
+    name = getname()
+    if name:
+        args = ["git", "remote", "rm", name]
+        subprocess.check_call(args)
