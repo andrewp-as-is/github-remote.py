@@ -1,6 +1,7 @@
-#!/usr/bin/env python
+__all__ = ['add', 'get', 'getname', 'geturl', 'rm']
+
+
 import os
-import public
 import subprocess
 
 
@@ -26,14 +27,12 @@ def _remotes():
     return result
 
 
-@public.add
 def add(name, url):
     """`git remote add name url`"""
     args = ["git", "remote", "add", name, url]
     subprocess.check_call(args)
 
 
-@public.add
 def get():
     """return git remote tuple (name, url)"""
     for name, url in _remotes():
@@ -43,21 +42,18 @@ def get():
             return name, url
 
 
-@public.add
 def getname():
     """return git remote name"""
     name, url = get() or (None, None)
     return name
 
 
-@public.add
 def geturl():
     """return git remote url"""
     name, url = get() or (None, None)
     return url
 
 
-@public.add
 def rm():
     """`git remote rm name`"""
     name = getname()
